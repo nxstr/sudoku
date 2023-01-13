@@ -269,6 +269,9 @@ void new_board::saveGame(){
     for(int i=0; i<9;i++){
         for(int j=0; j<9;j++){
             std::string s= std::to_string(i)+ std::to_string(j) + std::to_string(board[i][j]);
+            if(not_change[i][j]!=0){
+                s+="g";
+            }
             b.push_back(s);
         }
     }
@@ -283,7 +286,11 @@ void new_board::loadGame(){
 
     while(getline(file, s)){
         if(std::isdigit(s[0]) && std::isdigit(s[1]) && std::isdigit(s[2])){
+            if(s[3]=='g'){
+                not_change[s[0]-'0'][s[1]-'0'] = s[2]-'0';
+            }
             board[s[0]-'0'][s[1]-'0'] = s[2]-'0';
+
         }
     }
 

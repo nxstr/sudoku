@@ -5,6 +5,9 @@
 #include <fstream>
 #include <thread>
 #include <mutex>
+#include <chrono>
+#include <future>
+#include <condition_variable>
 #include "game.hpp"
 #include "solver.hpp"
 
@@ -106,11 +109,11 @@ std::vector<int> game::getX(){
                 }
             }
         }
-        else if (str[0] == 'q') {
+        else if (str == "quit") {
             set_quit(true);
             return nums;
         }
-        else if (str[0] == 'w') {
+        else if (str == "save") {
             board.saveGame();
             std::cout << "Game successfully saved\n";
         }else if (str == "solve") {
@@ -140,7 +143,7 @@ std::vector<int> game::getX(){
 
 
 int game::set_difficul() {
-    std::cout << "Do you want to choose difficult of game? y/n" << std::endl;
+    std::cout << "Do you want to choose difficult of game? (Default is EASY) y/n" << std::endl;
     std::string choice;
     std::cin >> choice;
     int difficult;
@@ -206,14 +209,14 @@ int main() {
                 t3.join();
             }
             q = player.get_quit();
-            if(q){
-                std::cout << "Do you want to save game? y/n" << std::endl;
-                std::string cho;
-                std::cin >> cho;
-                if(cho=="y"){
-                    player.get_board().saveGame();
-                }
-            }
+//            if(q){
+//                std::cout << "Do you want to save game? y/n" << std::endl;
+//                std::string cho;
+//                std::cin >> cho;
+//                if(cho=="y"){
+//                    player.get_board().saveGame();
+//                }
+//            }
         }
         std::cout << "\r------------Game ended------------\n";
     };
@@ -221,17 +224,16 @@ int main() {
 
 
 
-    set_raw(true);
+//    set_raw(true);
     game PP;
     PP.initialize();
 
     std::thread t1(outputThread, std::ref(PP));
-
     t1.join();
 
 
 
-    set_raw(false);
+//    set_raw(false);
 //    game g = game();
 //    g.initialize();
     return 0;
