@@ -37,10 +37,6 @@ void game::initialize(){
  */
 bool game::moving(){
     while(true){
-        if(!board.get_empty()){
-            std::cout << "---------Congratulations!---------" << std::endl;
-            return true;
-        }
         int x = nums[0]-1;
         int y = nums[1]-1;
         int num = nums[2];

@@ -5,36 +5,35 @@
 ## Popis projektu
 
 Projekt je implementaci hry Sudoku.
-Hrac zadava do prikazove radky povolene prikazy, na zaklade kterych program bude neco delat.
-Hra pouziva klasicka pravidla Sudoku: jsou povolene cislice od 1 do 9, ktere se nesmi opakovat v jednem ctverce, v jednem radku a v jednem sloupci.
-Taky, program nabizi uzivateli vyber slozitosti hry, jsou tri varianty: easy, medium, hard.
-Slozitost oznaci generatoru hry, kolik znamych cislic bude na zacatku hry.
+Hráč zadává do příkazové Radky povolené příkazy, na zaklade kterých program bude něco dělat.
+Hra používá klasická pravidla Sudoku: jsou povolené číslice od 1 do 9, které se nesmí opakovat v jedněm čtverce, v jednem radku a v jednem sloupci.
+Taky, program nabízí uživateli vyber složitosti hry, jsou tři varianty: easy, medium, hard.
+Složitost označí generátoru hry, kolik známých číslic bude na začátku hry.
 
 ## Spuštění a přepínače
 
-Hra se spousti z prikazove radky prikazem `./sudoku`
-bez zadnych parametru.
-(P.s.: zkousela jsem spustit program jenom na windows a na mac os, na linuxu bohuzel ne, proto nevim, jestli tam spusteni je uplne stejne.
-CMakeLists jsem udelala podle ukazkove hry tic tac toe, proto spusteni by melo byt asi stejne, jenom s pouzitim slova "sudoku" misto "Piskvorky")
+Hra se spoušti z příkazové řádky příkazem `./sudoku`
+bez žadných parametrů.
+(P.S.: zkoušela jsem spustit program jenom na windows a na mac os, na linuxu bohužel ne, proto nevím, jestli tam spuštěni je úplně stejné.
+CMakeLists jsem udělala podle ukázkové hry tic tac toe, proto spuštěni by mělo byt asi stejné, jenom s použitím slova "sudoku" místo "Piskvorky")
 
-Po zadani tohoto prikazu v prikazove radce se objevi prvni otazka: "Do you want to start new game(n) or load saved(l)? n/l",
-pokud prikaz `l` - nacte se posledni ulozena hra, pokud uzivatel zada prikaz `n`, zgeneruje se nova hra a dalsi otazka programu bude ohledne slozitosti hry.
-
+Po zadaní tohoto příkazu v příkazove řadce se objeví první otazka: "Do you want to start new game(n) or load saved(l)? n/l",
+pokud příkaz `l` - načte se poslední uložena hra, pokud uživatel zadá příkaz `n`, zgeneruje se nova hra a další otázka programu bude ohledně složitosti hry.
 ## Ovládání programu
 
-Po nastaveni prvnich vyberu z predchoziho kroku nacte se deska.
-a hrac ma zadat nasledujici data: souradnice a hodnotu "kamenu".
-Napriklad prikaz `1 2 3` bude znamenat, ze leva souradnice se rovna 1, horni souradnice se rovna 2, hodnota cislice ktere uzivatel chci umistit je 3.
+Po nastaveni prvních výběru z předchozího kroku načte se deska.
+a hráč má zadat následující data: souřadnice a hodnotu "kamenu".
+Například, příkaz `1 2 3` bude znamenat, ze leva souřadnice se rovna 1, horní souřadnice se rovna 2, hodnota číslice které uživatel chci umístit je 3.
 
-Program zkontroluje jestli vstup je validni a pokud ano - prida cislice na desku.
-Predem zname cislice (ktere se neda zmenit) jsou vypsane bilou barvou.
-Cislice ktere pridava uzivatel jsou vypsane zelenou barvou, a uzivatel je muze kdykoliv menit.
+Program zkontroluje jestli vstup je validní a pokud ano - přidá číslice na desku.
+Předem známa číslici (které se nedá změnit) jsou vypsané bílou barvou.
+Číslici které přidává uživatel jsou vypsané zelenou barvou, a uživatel je může kdykoliv měnit.
 
-Prikaz `save` ulozi momentalny stav hry do souboru saved.txt
+Příkaz `save` uloží momentální stav hry do souboru saved.txt
 
-Prikaz `solve` zavola automaticke vyreseni desky, pokud reseni existuje - vypise vyslednou desku, pokud ne - vypise hlasku ze deska uz reseni nema.
-Po zavolani tohoto prikazu program se automaticky ukonci.
+Příkaz `solve` zavolá automatické vyřešeni desky, pokud řešeni existuje - vypíše výslednou desku, pokud ne - vypíše hlášku, že deska už řešeni nemá.
+Po zavolaní tohoto příkazu program se automaticky ukonči.
 
-Prikaz `quit` ukonci program.
+Příkaz `quit` ukonči program.
 
-Program se skonci automaticky, kdyz nebude zadne prazdne misto na desce.
+Program se skonči automaticky, když nebude zadně prázdné místo na desce.
