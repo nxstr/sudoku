@@ -8,7 +8,7 @@ if(WIN32)
     set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-static")
 endif()
 
-add_executable(sudoku main.cpp solver.cpp solver.hpp game.cpp game.hpp board.hpp board.cpp)
+add_executable(sudoku solver.cpp solver.hpp game.cpp game.hpp board.hpp board.cpp)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

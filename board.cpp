@@ -17,6 +17,11 @@ new_board::new_board(int given_board[9][9]): board(9, std::vector<int>(9, 0)), d
         }
     }
 };
+/*
+ * konstruktor tridy pripravi novou desku
+ * ktera bude vyuzita bud pro nacteni ulozene hry nebo
+ * pro generace nove hry
+ */
 new_board::new_board(): board(9, std::vector<int>(9, 0)), difficulty(0), not_change(9, std::vector<int>(9, 0)){
     std::vector<int> tmp_board;
     int iter = 1;
@@ -43,7 +48,12 @@ new_board::new_board(): board(9, std::vector<int>(9, 0)), difficulty(0), not_cha
     }
 }
 
-
+/*
+ * dale nasleduji funkci ktere promichaji mezi sebou
+ * jednotlive casti zgenerovane desky, bud to radky, sloupce,
+ * nebo jejich skupiny.
+ * je to cast generace nahodne hry.
+ */
 
 void new_board::reverse_rows_n_cols(){
     for (int i = 0; i < 9; i++){
@@ -98,6 +108,10 @@ void new_board::swap_colums_area(){
     reverse_rows_n_cols();
 }
 
+/*
+ * funkce slouzi k nahodnemu vyuziti predchozich funkci
+ */
+
 void new_board::generate_random_base(int count){
     srand(time(NULL));
     for(int i=0; i<count; i++){
@@ -132,6 +146,13 @@ int new_board::set_difficulty(){
     }
     return easy;
 }
+
+/*
+ * funkce je urcena k odstraneni kamenu, aby na desce se zustala jenom
+ * cast kamenu. Velikost te casti je urcena sloyitosti hry.
+ * Kazde odstraneni je kontrolovano, jestli se da bez takoveho kamenu
+ * vyresit sudoku. pokud ne - on se zustane na desce.
+ */
 
 void new_board::delete_stones(){
     std::vector<std::vector<int>> visited(9, std::vector<int>(9, 0));
@@ -179,6 +200,9 @@ void new_board::set_solution(std::vector<std::vector<int>> table){
     }
 }
 
+/*
+ * funcke prida tah uzivatele na desku pokud je validni
+ */
 
 bool new_board::make_move(int x, int y, int num){
         if(valid_move(x, y, num)){
@@ -189,6 +213,9 @@ bool new_board::make_move(int x, int y, int num){
         }
 }
 
+/*
+ * kontrola validnosti tahu
+ */
 bool new_board::valid_move(int x, int y, int num){
     if(not_change[x][y]==0) {
         solver s = solver(board);
@@ -217,12 +244,6 @@ bool new_board::get_empty(){
 }
 
 void new_board::print_board() {
-//    for(auto item:board){
-//        for(auto jtem:item){
-//            std::cout << "| " << jtem << " ";
-//        }
-//        std::cout << "|" << std::endl << "-------------------------------------" << std::endl;
-//    }
     std::stringstream buffer;
     std::cout << ANSI_CLEAR << ANSI_COLOR_RESET;
     std::cout << "\r";
@@ -252,7 +273,6 @@ void new_board::print_board() {
             std::cout << "      ";
             for(int i = 0; i<7; i++)
                 std::cout << "---";
-//            std::cout << "-";
         }
         std::cout << std::endl;
     }
@@ -262,6 +282,10 @@ void new_board::print_board() {
 void new_board::set_difficult(int difficult) {
     this->difficulty = difficult;
 }
+
+/*
+ * funkce ulozi aktualni desku do souboru saved.txt
+ */
 
 void new_board::saveGame(){
     std::ofstream output_file("saved.txt");
@@ -279,6 +303,11 @@ void new_board::saveGame(){
     std::copy(b.begin(), b.end(), output_iterator);
     output_file.close();
 }
+
+/*
+ * funkce nacte ze souboru posledni ulozenou hru a pripravi
+ * desku pro pokracovani ve hre
+ */
 
 void new_board::loadGame(){
     std::ifstream file("saved.txt");

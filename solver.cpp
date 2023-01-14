@@ -1,9 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <map>
 #include <algorithm>
 #include "solver.hpp"
 
+/*
+ * naplneni vlastni desky na zaklade desky z jine tridy
+ */
 solver::solver(std::vector<std::vector<int>> board): table(9, std::vector<int>(9, 0)), solution(), empty_visited(9, std::vector<int>(9, -1)){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
@@ -31,7 +33,9 @@ solver::solver(int board[9][9]): table(9, std::vector<int>(9, 0)), solution(), e
         }
     }
 };
-
+/*
+ * nasledujici funkce slouzi pro validace tahu
+ */
 bool solver::is_in_row(int x, int num){
     for(int i=0; i<9; i++){
         if(table[x][i]==num){
@@ -68,6 +72,9 @@ bool solver::is_valid_stone(int x, int y, int num){
     return !is_in_row(x, num) && !is_in_col(y, num) && !is_in_box(x, y, num);
 }
 
+/*
+ * urceni prazdneho mista, kam zatim neni umisten kamen
+ */
 bool solver::findEmptyPlace(int &row, int &col){
     for (row = 0; row < 9; row++)
         for (col = 0; col < 9; col++)
@@ -75,7 +82,10 @@ bool solver::findEmptyPlace(int &row, int &col){
                 return true;
     return false;
 }
-
+/*
+ * funkce ktera vyresi desku,
+ * pokud reseni neexistuje, vrati false
+ */
 bool solver::solve(){
     int row, col;
     if (!findEmptyPlace(row, col))
@@ -127,7 +137,6 @@ void solver::print_board(){
             std::cout << "      ";
             for(int i = 0; i<7; i++)
                 std::cout << "---";
-//            std::cout << "-";
         }
         std::cout << std::endl;
     }

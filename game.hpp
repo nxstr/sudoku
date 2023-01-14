@@ -5,16 +5,16 @@
 
 class game{
 private:
-    new_board board;
-    bool quit;
-    std::vector<int> nums;
+    new_board board; //aktualni deska
+    bool quit; //promenna pro oznaceni ukonceni hry
+    std::vector<int> nums; //pole vstupnich hodnot
     std::mutex mutex;
 public:
     game();
-    bool moving();
+    bool moving(); //fixuje tah hrace
     int set_difficul();
-    std::vector<int> getX();
-    void initialize();
+    std::vector<int> getX(); //zpracovani inputu
+    void initialize(); //inicializacni funkce, slouzi pro vyber nove nebo ulozene hry
     bool get_quit() const {
         return quit;
     }
@@ -22,8 +22,8 @@ public:
         quit = qq;
     }
     bool print_board();
-    bool validMove();
-    bool endGame(){
+    bool validMove(); //validace tahu
+    bool endGame(){ //kontrola jestli deska ma prazdna mista
         if(!board.get_empty()){
             return true;
         }

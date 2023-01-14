@@ -9,9 +9,15 @@
 #include <iostream>
 #include <map>
 #include <vector>
+
+/*
+ * trida slouzi pro automaticke reseni sudoku.
+ * je vyuzita pro validace pri odstraneni kamenu behem generace nove desky,
+ * a taky k automatickemu reseni desky na pozadani uzivatele
+ */
 class solver {
 private:
-    std::vector<std::vector<int>> table;
+    std::vector<std::vector<int>> table; //vlastni deska
     std::map<std::pair<int, int>, std::vector<int>> solution;
     std::vector<std::vector<int>> empty_visited;
 public:
