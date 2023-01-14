@@ -4,7 +4,9 @@ project(sudoku LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-#set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-static")
+if(WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-static")
+endif()
 
 add_executable(sudoku main.cpp solver.cpp solver.hpp game.cpp game.hpp board.hpp board.cpp)
 
