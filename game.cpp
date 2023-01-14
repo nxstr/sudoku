@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 #include <thread>
-#include <mutex>
+#include <future>
 #include "game.hpp"
 #include "solver.hpp"
 
@@ -13,8 +13,11 @@ game::game():board(), quit(false), nums(){
 
 };
 
+/*
+ * funkce yepta se hrace jestli chce zacit novou hru nebo nacist ulozenou
+ */
 void game::initialize(){
-    std::cout << "Do you want to start new game or load saved? n/l" << std::endl;
+    std::cout << "Do you want to start new game(n) or load saved(l)? n/l" << std::endl;
     std::string choice;
     std::cin >> choice;
     if(choice=="n"){
@@ -28,42 +31,16 @@ void game::initialize(){
         board.loadGame();
         std::cout << "----------LAST SAVED GAME----------" << std::endl;
     }
-//    moving();
 }
-
+/*
+ * zavola pridani tahu z tridy board pro konkretni vstupni data
+ */
 bool game::moving(){
-//    board.print_board();
-
     while(true){
-        if(!board.get_empty()){
-            std::cout << "---------Congratulations!---------" << std::endl;
-            return true;
-        }
-//        std::cout << "Choose your next move (write left side coord, up coord and value of stone):" << std::endl;
-//        std::vector<int> nums = getX();
-//        while(nums[0]==-1){
-//            std::cout << "Do you want to quit game? y/n" << std::endl;
-//            std::string choice;
-//            std::cin >> choice;
-//            if(choice=="y"){
-//                std::cout << "Do you want to save game? y/n" << std::endl;
-//                std::string cho;
-//                std::cin >> cho;
-//                if(cho=="y"){
-//                    board.saveGame();
-//                }
-//                std::cout <<"------------Game ended------------" << std::endl;
-//                return;
-//            }
-//            if(choice=="n"){
-//                nums = getX();
-//            }
-//        }
         int x = nums[0]-1;
         int y = nums[1]-1;
         int num = nums[2];
         if(board.make_move(x, y, num)){
-//            board.print_board();
             nums.clear();
             return true;
         }else{
@@ -72,7 +49,9 @@ bool game::moving(){
 
     }
 }
-
+/*
+ * doplnkova validace tahu
+ */
 bool game::validMove(){
     if(nums.size()==3) {
         if (board.valid_move(nums[0] - 1, nums[1] - 1, nums[2])) {
@@ -87,10 +66,12 @@ bool game::print_board(){
     board.print_board();
     return true;
 }
-
+/*
+ * funkce zpracovava vstupni hodnoty a royhoduje v jakem smeru
+ * program ma pokracovat
+ */
 std::vector<int> game::getX(){
     std::unique_lock<std::mutex> lg(mutex);
-//    std::vector<int> nums;
     std::string str;
     std::cout << "Enter left side coord, up coord and number: ";
     while(nums.size()!=3){
@@ -106,13 +87,14 @@ std::vector<int> game::getX(){
                 }
             }
         }
-        else if (str[0] == 'q') {
+        else if (str == "quit") {
             set_quit(true);
             return nums;
         }
-        else if (str[0] == 'w') {
+        else if (str == "save") {
             board.saveGame();
             std::cout << "Game successfully saved\n";
+            std::cout << "Enter left side coord, up coord and number: ";
         }else if (str == "solve") {
             solver s = solver(board.get_board());
             if(s.solve()) {
@@ -138,9 +120,11 @@ std::vector<int> game::getX(){
 }
 
 
-
+/*
+ * urceni slozitosti hry
+ */
 int game::set_difficul() {
-    std::cout << "Do you want to choose difficult of game? y/n" << std::endl;
+    std::cout << "Do you want to choose difficult of game? (Default is EASY) y/n" << std::endl;
     std::string choice;
     std::cin >> choice;
     int difficult;
@@ -167,35 +151,30 @@ void set_raw(bool set) {
 int main() {
 
     auto inputThread = [](game& player) {
-        std::cout << "\rStart input thread\n";
         bool q = false;
         std::vector<int> nums;
         while (!q && !player.validMove()) {
             nums = player.getX();
             q = player.get_quit();
         }
-        std::cout << "\rExit input thread\n";
     };
 
 
 
 
     auto computeThread = [](game& player) {
-        std::cout << "\rStart compute thread\n";
         bool q = false;
         bool move = false;
         while (!q && !move) {
             move = player.moving();
             q = player.get_quit();
         }
-        std::cout << "\rExit compute thread\n";
     };
 
 
 
 
     auto outputThread = [&inputThread, &computeThread](game& player) {
-        std::cout << "\rStart output thread\n";
         bool q = false;
         while (!q && !player.endGame()) {
             player.print_board();
@@ -206,33 +185,15 @@ int main() {
                 t3.join();
             }
             q = player.get_quit();
-            if(q){
-                std::cout << "Do you want to save game? y/n" << std::endl;
-                std::string cho;
-                std::cin >> cho;
-                if(cho=="y"){
-                    player.get_board().saveGame();
-                }
-            }
         }
         std::cout << "\r------------Game ended------------\n";
     };
 
-
-
-
-    set_raw(true);
     game PP;
     PP.initialize();
 
     std::thread t1(outputThread, std::ref(PP));
-
     t1.join();
 
-
-
-    set_raw(false);
-//    game g = game();
-//    g.initialize();
     return 0;
 }
